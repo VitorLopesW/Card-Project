@@ -2,6 +2,7 @@ import { useState, useMemo, useRef } from 'react'
 import './App.css'
 import CardRenderer from './components/CardRenderer/CardRenderer.jsx'
 import Models from './models/models.jsx'
+import cards from './models/cards.js'
 
 // libs de exportação
 import html2canvas from 'html2canvas'
@@ -13,39 +14,9 @@ const { Text, Image } = Models
 const CARD_HEIGHT = 1039
 const CARD_WIDTH = 744
 
+
 export default function App() {
-  const cards = [
-    [
-      new Image({ url: '/images/eu.jpg', size: ['100%', '100%'], max: [CARD_WIDTH, CARD_HEIGHT] }),
-      new Text({
-        html: "<span style='color:white;font-weight:700'>Meuw Título</span>",
-        size: ['80%', 120],
-        max: [CARD_WIDTH, CARD_HEIGHT],
-        pos: [0, 0],
-        smartProps: { centerText: true, minFontSize: 10, maxFontSize: 40 }
-      }),
-    ].reverse(),
-    [
-      new Image({ url: '/images/eu.jpg', size: ['100%', '100%'], max: [CARD_WIDTH, CARD_HEIGHT] }),
-      new Text({
-        html: "<span style='color:white;font-weight:700'>Meu Título 22222</span>",
-        size: ['80%', 120],
-        max: [CARD_WIDTH, CARD_HEIGHT],
-        pos: [0, 0],
-        smartProps: { centerText: true, minFontSize: 10, maxFontSize: 40 }
-      }),
-    ],
-    [
-      new Image({ url: '/images/eu.jpg', size: ['100%', '100%'], max: [CARD_WIDTH, CARD_HEIGHT] }),
-      new Text({
-        html: "<span style='color:white;font-weight:700'>Meu Títul2o 22222</span>",
-        size: ['80%', 120],
-        max: [CARD_WIDTH, CARD_HEIGHT],
-        pos: [0, 0],
-        smartProps: { centerText: true, minFontSize: 10, maxFontSize: 40 }
-      }),
-    ]
-  ]
+
 
   // ---- estado
   const [index, setIndex] = useState(0)
@@ -59,17 +30,6 @@ export default function App() {
   // helper para injetar um índice visível na carta
   const makeIndexedLayers = (layers, i) => {
     const base = layers?.slice() ?? []
-    base.push(
-      new Text({
-        html: `<span style='color:white;font-weight:600;background:rgba(0,0,0,0.5);padding:6px 10px;border-radius:8px'>
-                ${i + 1} / ${cards.length}
-              </span>`,
-        size: [180, 40],
-        max: [CARD_WIDTH, CARD_HEIGHT],
-        pos: [0, 200], // ajustável
-        smartProps: { centerText: true, minFontSize: 10, maxFontSize: 22 }
-      })
-    )
     return base
   }
 
