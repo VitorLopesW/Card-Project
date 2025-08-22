@@ -1,0 +1,184 @@
+// CardCreator.module.scss (use : para .sass ou ; e {} para .scss)
+// --- Variáveis Globais de Estilo ---
+$primary-font: 'Roboto', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+$background-color: #282c34; // Um cinza escuro, bom para temas "dev" ou "game"
+$container-background: #3a3f4a;
+$widget-background: #4f5563;
+$text-color: #e6e6e6;
+$label-color: #c0c0c0;
+$primary-accent: #61dafb; // Um azul claro, como o do React
+$secondary-accent: #ff6b6b; // Um vermelho/coral para ações
+$success-color: #50fa7b; // Verde para "próximo"
+$border-color: #5a6170;
+$border-radius-sm: 5px;
+$border-radius-md: 8px;
+$box-shadow-light: 0 3px 7px rgba(0, 0, 0, 0.25);
+$box-shadow-strong: 0 5px 15px rgba(0, 0, 0, 0.35);
+
+// --- Mixin para Flexbox (opcional, mas útil) ---
+@mixin flex-container($direction: row, $justify: center, $align: center) {
+  display: flex;
+  flex-direction: $direction;
+  justify-content: $justify;
+  align-items: $align;
+}
+
+// --- Estilos Principais ---
+.cardCreator {
+  @include flex-container(column, flex-start, center);
+  min-height: 100vh;
+  padding: 25px;
+  font-family: $primary-font;
+  background-color: $background-color;
+  color: $text-color;
+  gap: 30px; // Espaço entre o container de controles e o preview
+
+  // Container para todos os controles de input
+  .controlsContainer {
+    background-color: $container-background;
+    padding: 30px 40px;
+    border-radius: $border-radius-md;
+    box-shadow: $box-shadow-strong;
+    width: 100%;
+    max-width: 650px;
+
+    h1 {
+      color: $primary-accent;
+      text-align: center;
+      margin-top: 0;
+      margin-bottom: 35px;
+      font-size: 2.4em;
+      font-weight: 300;
+      letter-spacing: 0.5px;
+    }
+
+    // Estilo para cada "passo"
+    .step {
+      margin-bottom: 30px;
+      padding: 25px;
+      border-radius: $border-radius-sm;
+      border-left: 5px solid $primary-accent;
+
+      h2 {
+        margin-top: 0;
+        margin-bottom: 25px;
+        font-size: 1.7em;
+        font-weight: 400;
+        padding-bottom: 12px;
+        border-bottom: 1px solid $border-color;
+      }
+
+      .formGroup {
+        margin-bottom: 22px;
+
+        label {
+          display: block;
+          margin-bottom: 10px;
+          font-weight: 500;
+          font-size: 1.05em;
+          color: $label-color;
+        }
+
+        input[type="text"],
+        select {
+          width: 100%;
+          padding: 14px 18px;
+          border: 1px solid $border-color;
+          border-radius: $border-radius-sm;
+          background-color: $widget-background;
+          font-size: 1em;
+          color: $text-color;
+          box-sizing: border-box;
+          transition: border-color 0.25s ease, box-shadow 0.25s ease;
+
+          &:focus {
+            border-color: $primary-accent;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba($primary-accent, 0.2);
+          }
+        }
+        
+        // Estilo para a seta customizada do select
+        select {
+          appearance: none;
+          background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23c0c0c0' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+          background-repeat: no-repeat;
+          background-position: right 1rem center;
+          background-size: 1em 0.75em;
+          padding-right: 3rem; // Garante espaço para a seta
+        }
+      }
+    }
+
+    // Container específico para o TextSmith, se precisar de estilização extra
+    .textSmithContainer {
+        // Ex: border: 1px dashed $border-color; padding: 15px;
+    }
+    
+    // Botões de Navegação
+    .navigationButtons {
+      @include flex-container(row, space-between, center);
+      margin-top: 25px;
+      padding-top: 25px;
+      border-top: 1px solid $border-color;
+
+      button {
+        padding: 12px 28px;
+        border: none;
+        border-radius: $border-radius-sm;
+        font-size: 1.05em;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background-color 0.2s ease, transform 0.15s ease;
+
+        &:hover:not(:disabled) {
+          transform: translateY(-2px);
+          filter: brightness(1.1);
+        }
+        &:active:not(:disabled) {
+          transform: translateY(-1px);
+        }
+
+        &.prevButton {
+          background-color: $secondary-accent;
+          color: white;
+        }
+        
+        &.nextButton {
+          background-color: $success-color;
+          color: #282c34; // Texto escuro para contraste com fundo verde claro
+           &:hover:not(:disabled) {
+          }
+        }
+        
+        &:disabled {
+          cursor: not-allowed;
+        }
+      }
+    }
+  } // Fim de .controlsContainer
+
+  // Área de Preview da Carta
+  .cardPreviewArea {
+    width: 100%;
+    max-width: calc(2143px / 5 + 40px); // Largura da carta + padding/sombra
+    @include flex-container(column, center, center);
+    padding: 20px; // Espaço para sombra ou bordas
+    border-radius: $border-radius-md;
+    box-shadow: $box-shadow-light;
+  }
+
+  .art {
+    // width e height são definidos via style prop no componente
+    // CardFrame é responsável pelo conteúdo visual interno.
+    // Esta div .art é o container direto do CardFrame + SmartText.
+    background-color: #000; // Fundo escuro para o card se destacar, ou transparente
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); // Sombra mais pronunciada para a carta
+    border-radius: 15px; // Idealmente, o CardFrame já deve ter bordas arredondadas.
+                         // Se CardFrame não tiver, isso ajuda a cortar o conteúdo.
+    position: relative; // Essencial para o posicionamento absoluto do SmartText
+    overflow: hidden; // Para garantir que nada (SmartText, etc.) vaze das bordas arredondadas
+    position: sticky!important;
+
+  }
+}

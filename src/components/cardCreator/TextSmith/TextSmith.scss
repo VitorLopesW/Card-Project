@@ -1,0 +1,272 @@
+// Variáveis (opcional, mas bom para consistência)
+$primary-color: #007bff;
+$secondary-color: #28a745;
+$light-gray: #f0f0f0;
+$medium-gray: #ccc;
+$dark-gray: #555;
+$dragging-bg: #e0e0e0;
+$box-dragging-bg: #e6f2ff;
+$box-border-color: $primary-color;
+$item-border-color: $medium-gray;
+$text-color: #333;
+$button-text-color: white;
+
+// Mixins (opcional)
+@mixin button-base {
+  padding: 10px 15px;
+  font-size: 1em;
+  cursor: pointer;
+  border-radius: 4px;
+  border: 1px solid transparent;
+  transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out;
+}
+
+// Estilos Globais para o TextSmith
+.text-smith-container {
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  max-width: 700px;
+  margin: auto;
+  color: $text-color;
+
+  .actions-bar-container {
+    margin-bottom: 25px;
+    padding: 15px;
+    background: $light-gray;
+    border-radius: 8px;
+
+    h2 {
+      margin-top: 0;
+      text-align: center;
+      color: $dark-gray;
+    }
+
+    .actions-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+
+      .action-type-button {
+        @include button-base;
+        border-color: $primary-color;
+        background-color: $primary-color;
+        color: $button-text-color;
+
+        &:hover {
+          background-color: darken($primary-color, 10%);
+          border-color: darken($primary-color, 10%);
+        }
+      }
+    }
+  }
+
+  .add-new-box-button {
+    @include button-base;
+    margin-top: 25px;
+    padding: 12px 20px;
+    font-size: 1.1em;
+    width: 100%;
+    background-color: $secondary-color;
+    color: $button-text-color;
+    border: none;
+
+    &:hover {
+      background-color: darken($secondary-color, 10%);
+    }
+  }
+}
+
+// Estilos para ActionBox
+.action-box {
+  border: 2px dashed $box-border-color;
+  padding: 10px;
+  margin: 20px 0;
+  background-color: #f8f9fa;
+  min-height: 100px;
+  border-radius: 8px;
+  transition: background-color 0.2s ease-in-out, transform 0.2s ease-out; // Adicionado para suavizar a transição do transform
+
+  &.dragging {
+    background-color: $box-dragging-bg;
+  }
+
+  .action-box-header {
+    padding: 5px;
+    cursor: grab;
+    text-align: center;
+    color: $dark-gray;
+    font-weight: bold;
+    user-select: none; // Impede seleção de texto ao arrastar
+    margin-bottom: 10px;
+    border-bottom: 1px solid $light-gray;
+  }
+
+  .action-box-empty-message {
+    text-align: center;
+    color: #777;
+    padding: 20px 0;
+  }
+}
+
+// Estilos para ActionItem (e SortableItem indiretamente)
+.action-item {
+  padding: 10px 15px;
+  margin: 8px; // Margem entre itens dentro da caixa
+  border: 1px solid $item-border-color;
+  background-color: white;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  cursor: grab;
+  transition: background-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out, opacity 0.2s ease-in-out; // Adicionado para suavizar a transição do opacity
+
+  &.dragging {
+    background-color: $dragging-bg;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    opacity: 0.7; // Mantém o opacity aqui também para consistência
+  }
+
+  .action-item-type {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+}
+
+// Estilos para ActionContent (conteúdo interno do ActionItem)
+.action-content {
+  margin-top: 8px;
+
+  label {
+    margin-right: 5px;
+  }
+
+  input[type="number"] {
+    width: 70px; // Aumentado um pouco
+    padding: 5px;
+    border: 1px solid $medium-gray;
+    border-radius: 3px;
+  }
+
+  button {
+    @include button-base;
+    padding: 6px 12px; // Botão menor
+    font-size: 0.9em;
+    background-color: $light-gray;
+    border-color: $medium-gray;
+    color: $text-color;
+
+    &:hover {
+      background-color: white!important
+    }
+  }
+
+  .action-message { // Para mensagens como "Sem configurações"
+    margin: 0;
+    font-style: italic;
+    color: $dark-gray;
+  }
+}
+
+// Estilos para DragOverlay
+.drag-overlay-item-display {
+  // Reutiliza estilos do action-item, mas pode ter modificações
+  @extend .action-item; // Herda estilos do .action-item
+  opacity: 0.9 !important; // Garante que o overlay seja visível
+  cursor: grabbing !important;
+  box-shadow: 0 6px 12px rgba(0,0,0,0.25) !important; // Sombra mais pronunciada
+}
+
+.drag-overlay-box-display {
+  border: 2px solid darken($box-border-color, 10%);
+  padding: 15px;
+  background-color: lighten($box-dragging-bg, 5%);
+  border-radius: 8px;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+  opacity: 0.9;
+  min-height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  color: darken($primary-color, 20%);
+  cursor: grabbing !important;
+}
+
+// ... (início do arquivo TextSmith.scss) ...
+
+// Estilos para ActionItem (e SortableItem indiretamente)
+.action-item {
+    // ... (estilos existentes do action-item) ...
+    position: relative; // Necessário para posicionar o botão de deletar absolutamente
+  
+    .action-item-type {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+      padding-right: 25px; // Adiciona espaço para o botão de deletar não sobrepor o texto
+    }
+  
+    .action-item-delete-button {
+      position: absolute;
+      top: 8px; // Ajuste conforme necessário
+      right: 8px; // Ajuste conforme necessário
+      background-color: #dc3545; // Cor vermelha para deletar
+      color: white;
+      border: none;
+
+      cursor: pointer;
+      opacity: 0.8;
+      transition: opacity 0.2s ease-in-out, background-color 0.2s ease-in-out;
+  
+      &:hover {
+        background-color: #c82333; // Vermelho mais escuro no hover
+        opacity: 1;
+      }
+    }
+  
+    // Opcional: mostrar o botão de deletar de forma mais proeminente quando o item estiver em hover
+    // &:hover .action-item-delete-button {
+    //   opacity: 1;
+    // }
+  }
+  
+  // ... (restante do arquivo TextSmith.scss) ...
+
+  // ... (início do arquivo TextSmith.scss) ...
+
+// Estilos para ActionBox
+.action-box {
+  // ... (estilos existentes do action-box) ...
+
+  .action-box-header {
+    // ... (estilos existentes do action-box-header) ...
+    display: flex; // Para alinhar título e botão
+    justify-content: space-between; // Espaçar título e botão
+    align-items: center; // Alinhar verticalmente
+
+    .action-box-title { // Wrapper opcional para o título se precisar de mais controle
+        flex-grow: 1; // Faz o título ocupar o espaço restante
+    }
+
+    .action-box-delete-button {
+      background-color: #dc3545; // Mesma cor do delete do item para consistência
+      color: white;
+      border: none;
+      border-radius: 4px; // Um pouco menos redondo que o do item, ou igual
+      padding: 5px 10px; // Um pouco maior
+      font-size: 0.9em;
+      line-height: 1.2;
+      cursor: pointer;
+      margin-left: 10px; // Espaço entre o título e o botão
+      transition: background-color 0.2s ease-in-out;
+
+      &:hover {
+        background-color: #c82333;
+      }
+    }
+  }
+  // ... (restante dos estilos do action-box) ...
+}
+
+// ... (restante do arquivo TextSmith.scss) ...

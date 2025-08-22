@@ -1,0 +1,94 @@
+// ActionsBar.scss
+.actions-bar-container {
+    display: flex;
+    flex-direction: column;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    margin-bottom: 20px;
+    width: 100%; // Ensure the container itself tries to take full available width
+    box-sizing: border-box; // Include padding and border in the element's total width and height
+  
+    h2 {
+      margin-top: 0;
+      margin-bottom: 15px;
+      font-size: 1.5em;
+      color: #333;
+      text-align: center;
+    }
+  
+    .actions-search-input {
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 1em;
+      width: 100%; // Take full width of its parent
+      box-sizing: border-box;
+  
+      &:focus {
+        outline: none;
+        border-color: #007bff;
+        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+      }
+    }
+  
+    .actions-buttons-scrollable {
+      max-height: 200px; // Your desired max height for vertical scrolling
+      overflow-y: auto;  // Enable vertical scrollbar when content overflows max-height
+      overflow-x: hidden; // Prevent horizontal scrollbar on this container
+      display: flex;     // Use flexbox for layout
+      flex-direction: row; // Arrange items in a row
+      flex-wrap: wrap;   // Allow items to wrap to the next line
+      gap: 8px;          // Consistent spacing between buttons (horizontally and vertically)
+      width: 100%;       // Ensure this area also takes full width
+  
+      /* Custom scrollbar styling (optional) */
+      &::-webkit-scrollbar {
+        width: 8px;
+      }
+  
+      &::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 10px;
+      }
+  
+      &::-webkit-scrollbar-thumb {
+        background: #888;
+        border-radius: 10px;
+      }
+  
+      &::-webkit-scrollbar-thumb:hover {
+        background: #555;
+      }
+    }
+  
+    .action-type-button {
+      padding: 10px 15px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 0.9em; // Slightly reduced font size for better fit
+      text-align: center;
+      transition: background-color 0.2s ease-in-out;
+      flex-grow: 0; // Don't allow buttons to grow to fill extra space in a line
+      flex-shrink: 0; // Don't allow buttons to shrink if space is tight (content will determine min width)
+  
+      // You might want to add a min-width if buttons with short text become too small
+      // min-width: 80px;
+  
+      &:hover {
+        background-color: #0056b3;
+      }
+    }
+  
+    .no-actions-found {
+      text-align: center;
+      color: #777;
+      padding: 10px;
+      width: 100%; // Ensure it takes full width to center text properly
+    }
+  }
